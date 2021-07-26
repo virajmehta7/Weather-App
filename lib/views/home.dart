@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'service.dart';
+import 'package:weather/service/service.dart';
+import 'hourly_tile.dart';
 
 class Home extends StatefulWidget {
   const Home({Key key}) : super(key: key);
@@ -13,6 +14,7 @@ class _HomeState extends State<Home> {
   TextEditingController search = TextEditingController();
   Service service = Service();
   var weather;
+  List forecast = [];
 
   @override
   void initState() {
@@ -25,7 +27,15 @@ class _HomeState extends State<Home> {
     setState(() {
       weather = weatherData;
     });
+    getForecast(weather.coordInfo.lat, weather.coordInfo.lon);
     search.clear();
+  }
+
+  getForecast(lat, lon) async {
+    final forecastData = await service.getForecast(lat, lon);
+    setState(() {
+      forecast = forecastData;
+    });
   }
 
   @override
@@ -66,7 +76,6 @@ class _HomeState extends State<Home> {
                   child: TextField(
                     controller: search,
                     style: TextStyle(fontSize: 18, color: Colors.white),
-                    keyboardType: TextInputType.visiblePassword,
                     textInputAction: TextInputAction.go,
                     onSubmitted: (_){
                       getWeather(search.text);
@@ -121,11 +130,37 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 ),
-                Image.network(weather.icon),
+                Container(
+                  height: 70,
+                  width: 70,
+                  decoration: BoxDecoration(
+                      color: Colors.transparent.withOpacity(1),
+                      borderRadius: BorderRadius.circular(50)
+                  ),
+                  child: Image.network(weather.icon),
+                ),
+                SizedBox(height: 10),
                 Text(weather.weatherInfo.desc.toString().toUpperCase()[0] + weather.weatherInfo.desc.toString().substring(1),
                   style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w400),
                 ),
-                SizedBox(height: 50),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(10,20,10,10),
+                  child: Container(
+                    height: 220,
+                    child: ListView.builder(
+                      itemCount: forecast.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return HourlyTile(
+                          dt: forecast[index].dt,
+                          temp: forecast[index].temp.toString(),
+                          icon: forecast[index].icons,
+                          main: forecast[index].main,
+                        );
+                      },
+                    ),
+                  ),
+                ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(20,0,20,0),
                   child: Container(
@@ -172,7 +207,7 @@ class _HomeState extends State<Home> {
                                   style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w300),
                                 ),
                                 SizedBox(height: 10),
-                                Text(weather.temperatureInfo.pressure.toString() + "mbar",
+                                Text(weather.temperatureInfo.pressure.toString() + "hPa",
                                   style: TextStyle(color: Colors.white, fontSize: 22),
                                 ),
                               ],
@@ -184,7 +219,7 @@ class _HomeState extends State<Home> {
                                   style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w300),
                                 ),
                                 SizedBox(height: 10),
-                                Text(weather.windInfo.speed.toString() + "m/s",
+                                Text((weather.windInfo.speed * 3.6).toString() + "km/h",
                                   style: TextStyle(color: Colors.white, fontSize: 22),
                                 ),
                               ],

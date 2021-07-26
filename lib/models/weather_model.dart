@@ -1,5 +1,6 @@
 class Weather{
   String cityName;
+  CoordInfo coordInfo;
   TemperatureInfo temperatureInfo;
   WeatherInfo weatherInfo;
   WindInfo windInfo;
@@ -39,6 +40,7 @@ class Weather{
 
   Weather({
     this.cityName,
+    this.coordInfo,
     this.temperatureInfo,
     this.weatherInfo,
     this.windInfo,
@@ -47,6 +49,7 @@ class Weather{
   factory Weather.fromJson(Map<String, dynamic> json) {
     return Weather(
       cityName: json['name'],
+      coordInfo: CoordInfo.fromJson(json['coord']),
       temperatureInfo: TemperatureInfo.fromJson(json['main']),
       weatherInfo: WeatherInfo.fromJson(json['weather'][0]),
       windInfo: WindInfo.fromJson(json['wind']),
@@ -54,6 +57,22 @@ class Weather{
   }
 }
 
+class CoordInfo{
+  double lon;
+  double lat;
+
+  CoordInfo({
+    this.lon,
+    this.lat
+  });
+
+  factory CoordInfo.fromJson(Map<String, dynamic> json) {
+    return CoordInfo(
+      lon: json['lon'].toDouble(),
+      lat: json['lat'].toDouble()
+    );
+  }
+}
 
 class TemperatureInfo{
   int temp;

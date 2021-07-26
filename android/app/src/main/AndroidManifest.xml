@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.weather">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="weather"
+        android:label="VM Weather"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
