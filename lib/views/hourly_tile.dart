@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 class HourlyTile extends StatelessWidget {
   final int dt, temp;
@@ -9,9 +11,12 @@ class HourlyTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    var dateTime, formattedDateTime, finalDateTime;
+    var location, dateTime, formattedDateTime, finalDateTime;
+    tz.initializeTimeZones();
+    location = tz.getLocation(timezone);
+    print(location);
+    dateTime = tz.TZDateTime.fromMillisecondsSinceEpoch(location, dt * 1000);
 
-    dateTime = DateTime.fromMillisecondsSinceEpoch(dt * 1000);
     formattedDateTime = DateFormat('HH:00').format(dateTime);
 
     if(formattedDateTime == '00:00'){
