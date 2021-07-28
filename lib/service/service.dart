@@ -15,10 +15,8 @@ class Service{
   getForecast(lat, lon) async {
     var url = Uri.parse('https://api.openweathermap.org/data/2.5/onecall?lat=$lat&lon=$lon&units=metric&exclude=current,minutely,alerts&appid=a3b1e5dc7a8bfffaaa2760cafadd99c9');
     var res = await http.get(url);
-    Map<String, dynamic> json = jsonDecode(res.body);
-    List<dynamic> body = json['hourly'];
-    List<Hourly> forecast = body.map((dynamic item) => Hourly.fromJson(item)).toList();
-    return forecast;
+    var json = jsonDecode(res.body);
+    return Forecast.fromJson(json);
   }
 
 }

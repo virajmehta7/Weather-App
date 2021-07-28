@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather/service/service.dart';
+import 'daily_tile.dart';
 import 'hourly_tile.dart';
 
 class Home extends StatefulWidget {
@@ -23,18 +24,22 @@ class _HomeState extends State<Home> {
   }
 
   getWeather(String city) async {
+    search.clear();
+    forecast.clear();
     final weatherData = await service.getWeather(city);
     setState(() {
       weather = weatherData;
     });
     getForecast(weather.coordInfo.lat, weather.coordInfo.lon);
-    search.clear();
   }
 
   getForecast(lat, lon) async {
-    final forecastData = await service.getForecast(lat, lon);
+    var forecastData = await service.getForecast(lat, lon);
+    for(var i = 0; i <= 47; i++) {
+      forecast.add(forecastData);
+    }
     setState(() {
-      forecast = forecastData;
+      forecast;
     });
   }
 
@@ -143,8 +148,34 @@ class _HomeState extends State<Home> {
                 Text(weather.weatherInfo.desc.toString().toUpperCase()[0] + weather.weatherInfo.desc.toString().substring(1),
                   style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w400),
                 ),
+                forecast.length == 0
+                ? Container()
+                : Padding(
+                  padding: EdgeInsets.fromLTRB(10,20,10,0),
+                  child: Container(
+                    padding: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: Colors.transparent.withAlpha(80),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: ListView.builder(
+                      itemCount: 7,
+                      shrinkWrap: true,
+                      physics: ScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return DailyTile(
+                          dt: forecast[index].daily[index].dt,
+                          min: forecast[index].daily[index].temp.min,
+                          max: forecast[index].daily[index].temp.max,
+                          main: forecast[index].daily[index].main,
+                          icon: forecast[index].daily[index].icons,
+                        );
+                      },
+                    ),
+                  ),
+                ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(10,20,10,10),
+                  padding: EdgeInsets.fromLTRB(10,10,10,10),
                   child: Container(
                     height: 220,
                     child: ListView.builder(
@@ -152,10 +183,11 @@ class _HomeState extends State<Home> {
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         return HourlyTile(
-                          dt: forecast[index].dt,
-                          temp: forecast[index].temp.toString(),
-                          icon: forecast[index].icons,
-                          main: forecast[index].main,
+                          timezone: forecast[0].timezone,
+                          dt: forecast[index].hourly[index].dt,
+                          temp: forecast[index].hourly[index].temp,
+                          icon: forecast[index].hourly[index].icons,
+                          main: forecast[index].hourly[index].main,
                         );
                       },
                     ),

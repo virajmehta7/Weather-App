@@ -97,7 +97,6 @@ class TemperatureInfo{
   }
 }
 
-
 class WeatherInfo{
   String main;
   String desc;

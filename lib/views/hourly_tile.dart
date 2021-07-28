@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class HourlyTile extends StatelessWidget {
-  final dt, temp, icon, main;
-  const HourlyTile({Key key, this.dt, this.temp, this.icon, this.main}) : super(key: key);
+  final int dt, temp;
+  final String icon, main, timezone;
+  const HourlyTile({Key key, this.dt, this.temp, this.icon, this.main, this.timezone}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class HourlyTile extends StatelessWidget {
             style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w300),
           ),
           SizedBox(height: 5),
-          Text(temp.toString() + "°",
+          Text("$temp°",
             style: TextStyle(color: Colors.white, fontSize: 26),
           ),
           SizedBox(height: 10),
@@ -42,7 +43,7 @@ class HourlyTile extends StatelessWidget {
             child: Image.network(icon),
           ),
           SizedBox(height: 5),
-          Text(main.toString(),
+          Text(main,
             style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w300),
           ),
         ],
