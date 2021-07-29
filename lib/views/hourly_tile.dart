@@ -14,7 +14,6 @@ class HourlyTile extends StatelessWidget {
     var location, dateTime, formattedDateTime, finalDateTime;
     tz.initializeTimeZones();
     location = tz.getLocation(timezone);
-    print(location);
     dateTime = tz.TZDateTime.fromMillisecondsSinceEpoch(location, dt * 1000);
 
     formattedDateTime = DateFormat('HH:00').format(dateTime);

@@ -24,12 +24,12 @@ class _HomeState extends State<Home> {
   }
 
   getWeather(String city) async {
-    search.clear();
-    forecast.clear();
     final weatherData = await service.getWeather(city);
     setState(() {
       weather = weatherData;
     });
+    search.clear();
+    forecast.clear();
     getForecast(weather.coordInfo.lat, weather.coordInfo.lon);
   }
 
@@ -194,7 +194,7 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(20,0,20,0),
+                  padding: EdgeInsets.fromLTRB(20,0,20,20),
                   child: Container(
                     padding: EdgeInsets.fromLTRB(0,20,0,20),
                     decoration: BoxDecoration(
@@ -262,7 +262,6 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
               ],
             ),
           ),

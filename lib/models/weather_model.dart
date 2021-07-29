@@ -18,8 +18,6 @@ class Weather{
       return 'assets/rain.jpg';
     if (weatherInfo.main == "Snow")
       return 'assets/snow.jpg';
-    if (weatherInfo.main == "Snow")
-      return 'assets/snow.jpg';
     if (weatherInfo.main == "Clear")
       return 'assets/clear.jpg';
     if (weatherInfo.main == "Clouds")
