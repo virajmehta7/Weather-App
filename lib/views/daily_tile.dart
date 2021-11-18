@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DailyTile extends StatelessWidget {
-  final int dt, min, max;
-  final String icon, main;
-  const DailyTile({Key key, this.dt, this.min, this.max, this.main, this.icon}) : super(key: key);
+  final int? dt, min, max;
+  final String? icon, main;
+  const DailyTile({Key? key, this.dt, this.min, this.max, this.main, this.icon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class DailyTile extends StatelessWidget {
     var date, formattedDate, finalDate;
     final now = DateTime.now();
 
-    date = DateTime.fromMillisecondsSinceEpoch(dt * 1000);
+    date = DateTime.fromMillisecondsSinceEpoch(dt! * 1000);
     formattedDate = DateFormat('EEE').format(date);
 
     if(formattedDate == DateFormat('EEE').format(now)) {
@@ -38,24 +38,34 @@ class DailyTile extends StatelessWidget {
               color: Colors.transparent.withOpacity(1),
               borderRadius: BorderRadius.circular(50),
             ),
-            child: Image.network(icon),
+            child: Image.network(icon!),
           ),
           SizedBox(width: 15),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(finalDate,
-                style: TextStyle(color: Colors.white, fontSize: 20),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
               ),
               SizedBox(height: 5),
-              Text(main,
-                style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w300),
+              Text(main!,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w300,
+                ),
               ),
             ],
           ),
           Spacer(),
           Text("$max° / $min°",
-            style: TextStyle(color: Colors.white, fontSize: 24),
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+            ),
           )
         ],
       ),

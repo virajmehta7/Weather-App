@@ -1,7 +1,7 @@
 class Forecast{
-  String timezone;
-  final List<Hourly> hourly;
-  final List<Daily> daily;
+  String? timezone;
+  final List<Hourly>? hourly;
+  final List<Daily>? daily;
 
   Forecast({
     this.timezone,
@@ -31,10 +31,10 @@ class Forecast{
 }
 
 class Hourly{
-  int dt;
-  int temp;
-  String main;
-  String icon;
+  int? dt;
+  int? temp;
+  String? main;
+  String? icon;
 
   String get icons {
     return 'https://openweathermap.org/img/wn/$icon@2x.png';
@@ -58,10 +58,10 @@ class Hourly{
 }
 
 class Daily{
-  int dt;
-  Temp temp;
-  String main;
-  String icon;
+  int? dt;
+  Temp? temp;
+  String? main;
+  String? icon;
 
   String get icons {
     return 'https://openweathermap.org/img/wn/$icon@2x.png';
@@ -86,8 +86,8 @@ class Daily{
 }
 
 class Temp{
-  int min;
-  int max;
+  int? min;
+  int? max;
 
   Temp({
     this.min,

@@ -1,38 +1,38 @@
 class Weather{
-  String cityName;
-  CoordInfo coordInfo;
-  TemperatureInfo temperatureInfo;
-  WeatherInfo weatherInfo;
-  WindInfo windInfo;
+  String? cityName;
+  CoordInfo? coordInfo;
+  TemperatureInfo? temperatureInfo;
+  WeatherInfo? weatherInfo;
+  WindInfo? windInfo;
 
   String get icon {
-    return 'https://openweathermap.org/img/wn/${weatherInfo.icon}@2x.png';
+    return 'https://openweathermap.org/img/wn/${weatherInfo!.icon}@2x.png';
   }
 
   get background {
-    if (weatherInfo.main == "Thunderstorm")
-      return 'assets/thunderstorm.jpg';
-    if (weatherInfo.main == "Drizzle")
-      return 'assets/drizzle.jpg';
-    if (weatherInfo.main == "Rain")
-      return 'assets/rain.jpg';
-    if (weatherInfo.main == "Snow")
-      return 'assets/snow.jpg';
-    if (weatherInfo.main == "Clear")
-      return 'assets/clear.jpg';
-    if (weatherInfo.main == "Clouds")
-      return 'assets/clouds.jpg';
-    if (weatherInfo.main == "Mist" ||
-        weatherInfo.main == "Smoke" ||
-        weatherInfo.main == "Haze" ||
-        weatherInfo.main == "Dust" ||
-        weatherInfo.main == "Fog" ||
-        weatherInfo.main == "Sand" ||
-        weatherInfo.main == "Ash" ||
-        weatherInfo.main == "Squall" ||
-        weatherInfo.main == "Tornado"
+    if (weatherInfo!.main == "Thunderstorm")
+      return 'assets/images/thunderstorm.jpg';
+    if (weatherInfo!.main == "Drizzle")
+      return 'assets/images/drizzle.jpg';
+    if (weatherInfo!.main == "Rain")
+      return 'assets/images/rain.jpg';
+    if (weatherInfo!.main == "Snow")
+      return 'assets/images/snow.jpg';
+    if (weatherInfo!.main == "Clear")
+      return 'assets/images/clear.jpg';
+    if (weatherInfo!.main == "Clouds")
+      return 'assets/images/clouds.jpg';
+    if (weatherInfo!.main == "Mist" ||
+        weatherInfo!.main == "Smoke" ||
+        weatherInfo!.main == "Haze" ||
+        weatherInfo!.main == "Dust" ||
+        weatherInfo!.main == "Fog" ||
+        weatherInfo!.main == "Sand" ||
+        weatherInfo!.main == "Ash" ||
+        weatherInfo!.main == "Squall" ||
+        weatherInfo!.main == "Tornado"
     )
-      return 'assets/fog.jpg';
+      return 'assets/images/fog.jpg';
 
   }
 
@@ -56,8 +56,8 @@ class Weather{
 }
 
 class CoordInfo{
-  double lon;
-  double lat;
+  double? lon;
+  double? lat;
 
   CoordInfo({
     this.lon,
@@ -73,10 +73,10 @@ class CoordInfo{
 }
 
 class TemperatureInfo{
-  int temp;
-  int feels;
-  int pressure;
-  int humidity;
+  int? temp;
+  int? feels;
+  int? pressure;
+  int? humidity;
 
   TemperatureInfo({
     this.temp,
@@ -96,9 +96,9 @@ class TemperatureInfo{
 }
 
 class WeatherInfo{
-  String main;
-  String desc;
-  String icon;
+  String? main;
+  String? desc;
+  String? icon;
 
   WeatherInfo({
     this.main,
@@ -116,7 +116,7 @@ class WeatherInfo{
 }
 
 class WindInfo{
-  int speed;
+  int? speed;
 
   WindInfo({this.speed});
 
