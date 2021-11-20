@@ -124,26 +124,11 @@ class _HomeState extends State<Home> {
               Padding(
                 padding: EdgeInsets.fromLTRB(10,20,10,40),
                 child: Container(
-                  padding: EdgeInsets.all(5),
+                  height: MediaQuery.of(context).size.height*0.4,
+                  padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: Colors.transparent.withAlpha(80),
                     borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: ListView.builder(
-                    itemCount: 7,
-                    shrinkWrap: true,
-                    physics: ScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return Container(
-                        padding: EdgeInsets.all(10),
-                        child: Text('',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                          ),
-                        ),
-                      );
-                    },
                   ),
                 ),
               ),
