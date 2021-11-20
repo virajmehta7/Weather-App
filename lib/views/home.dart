@@ -122,7 +122,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(10,20,10,0),
+                padding: EdgeInsets.fromLTRB(10,20,10,40),
                 child: Container(
                   padding: EdgeInsets.all(5),
                   decoration: BoxDecoration(
@@ -136,35 +136,11 @@ class _HomeState extends State<Home> {
                     itemBuilder: (context, index) {
                       return Container(
                         padding: EdgeInsets.all(10),
-                        child: Row(
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                                SizedBox(height: 5),
-                                Text('',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w300,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Spacer(),
-                            Text('',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 24,
-                              ),
-                            )
-                          ],
+                        child: Text('',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
                         ),
                       );
                     },
