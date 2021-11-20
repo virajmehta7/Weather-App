@@ -32,6 +32,7 @@ dependencies:
   intl: ^0.17.0
   timezone: ^0.8.0
   shared_preferences: ^2.0.8
+  shimmer: ^2.0.0
 
 dev_dependencies:
   flutter_test:

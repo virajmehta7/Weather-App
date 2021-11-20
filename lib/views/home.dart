@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:weather/service/service.dart';
 import 'daily_tile.dart';
 import 'hourly_tile.dart';
@@ -68,8 +69,112 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return weather == null ?
-    Center(
-      child: CircularProgressIndicator(),
+    Scaffold(
+      backgroundColor: Colors.grey.shade900,
+      appBar: AppBar(
+        title: Text('Loading...',
+          style: TextStyle(
+            fontWeight: FontWeight.w300,
+          ),
+        ),
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+      ),
+      body: Shimmer.fromColors(
+        baseColor: Colors.grey,
+        highlightColor: Colors.white,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(15,20,15,5),
+                child: TextField(
+                  controller: search,
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
+                  textInputAction: TextInputAction.go,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.transparent.withAlpha(60),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Colors.transparent
+                        ),
+                        borderRadius: BorderRadius.circular(50)
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Colors.transparent
+                        ),
+                        borderRadius: BorderRadius.circular(50)
+                    ),
+                    contentPadding: EdgeInsets.all(10),
+                    hintText: "Search city...",
+                    hintStyle: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w300,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(10,20,10,0),
+                child: Container(
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: Colors.transparent.withAlpha(80),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: ListView.builder(
+                    itemCount: 7,
+                    shrinkWrap: true,
+                    physics: ScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return Container(
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                SizedBox(height: 5),
+                                Text('',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Spacer(),
+                            Text('',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 24,
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     ) :
     Scaffold(
       appBar: AppBar(
