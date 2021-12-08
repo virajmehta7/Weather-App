@@ -194,7 +194,7 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(20,100,20,10),
+                  padding: EdgeInsets.fromLTRB(20,80,20,10),
                   child: RichText(
                     text: TextSpan(
                       children: [
