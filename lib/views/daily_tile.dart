@@ -35,7 +35,7 @@ class DailyTile extends StatelessWidget {
             height: 50,
             width: 50,
             decoration: BoxDecoration(
-              color: Colors.transparent.withOpacity(1),
+              color: Colors.black54,
               borderRadius: BorderRadius.circular(50),
             ),
             child: Image.network(icon!),
@@ -47,7 +47,8 @@ class DailyTile extends StatelessWidget {
               Text(finalDate,
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 20,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w300,
                 ),
               ),
               SizedBox(height: 5),
@@ -55,7 +56,6 @@ class DailyTile extends StatelessWidget {
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
-                  fontWeight: FontWeight.w300,
                 ),
               ),
             ],
@@ -64,7 +64,8 @@ class DailyTile extends StatelessWidget {
           Text("$max° / $min°",
             style: TextStyle(
               color: Colors.white,
-              fontSize: 24,
+              fontSize: 22,
+              fontWeight: FontWeight.w400,
             ),
           )
         ],

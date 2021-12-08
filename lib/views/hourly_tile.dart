@@ -25,13 +25,13 @@ class HourlyTile extends StatelessWidget {
     }
 
     return Container(
-      padding: EdgeInsets.all(20),
+      padding: EdgeInsets.all(18),
       child: Column(
         children: [
           Text(finalDateTime,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 20,
+              fontSize: 18,
               fontWeight: FontWeight.w300,
             ),
           ),
@@ -48,7 +48,7 @@ class HourlyTile extends StatelessWidget {
             height: 60,
             width: 60,
             decoration: BoxDecoration(
-              color: Colors.transparent.withOpacity(1),
+              color: Colors.black54,
               borderRadius: BorderRadius.circular(50),
             ),
             child: Image.network(icon!),

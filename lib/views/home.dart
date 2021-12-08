@@ -21,43 +21,30 @@ class _HomeState extends State<Home> {
   Service service = Service();
 
   getCity() async {
-
     SharedPreferences prefs = await SharedPreferences.getInstance();
     citySearched = prefs.getString('citySearched');
-
     citySearched == null ? getWeather("mumbai") : getWeather(citySearched);
-
   }
 
   getWeather(String city) async {
-
     final weatherData = await service.getWeather(city);
     setState(() {
       weather = weatherData;
     });
-
     FocusScope.of(context).unfocus();
     search.clear();
     forecast.clear();
-
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('citySearched', city);
-
     getForecast(weather.coordInfo.lat, weather.coordInfo.lon);
-
   }
 
   getForecast(lat, lon) async {
-
     var forecastData = await service.getForecast(lat, lon);
-
     for(var i = 0; i <= 47; i++) {
       forecast.add(forecastData);
     }
-    setState(() {
-      forecast;
-    });
-
+    setState(() {});
   }
 
   @override
@@ -90,6 +77,7 @@ class _HomeState extends State<Home> {
               Container(
                 padding: EdgeInsets.fromLTRB(15,20,15,5),
                 child: TextField(
+                  readOnly: true,
                   controller: search,
                   style: TextStyle(
                     fontSize: 18,
@@ -100,12 +88,6 @@ class _HomeState extends State<Home> {
                     filled: true,
                     fillColor: Colors.transparent.withAlpha(60),
                     enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Colors.transparent
-                        ),
-                        borderRadius: BorderRadius.circular(50)
-                    ),
-                    focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                             color: Colors.transparent
                         ),
@@ -167,7 +149,7 @@ class _HomeState extends State<Home> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Container(
+                Padding(
                   padding: EdgeInsets.fromLTRB(15,20,15,5),
                   child: TextField(
                     controller: search,
@@ -181,7 +163,7 @@ class _HomeState extends State<Home> {
                     },
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.transparent.withAlpha(60),
+                      fillColor: Colors.transparent.withOpacity(0.5),
                       enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                               color: Colors.transparent
@@ -195,13 +177,12 @@ class _HomeState extends State<Home> {
                           borderRadius: BorderRadius.circular(50)
                       ),
                       contentPadding: EdgeInsets.all(10),
-                      suffixIcon: IconButton(
+                      prefixIcon: IconButton(
                         onPressed: (){
                           getWeather(search.text);
                         },
                         icon: Icon(Icons.search),
-                        iconSize: 30,
-                        color: Colors.white,
+                        color: Colors.grey,
                       ),
                       hintText: "Search city...",
                       hintStyle: TextStyle(
@@ -213,31 +194,31 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(20,30,20,2),
+                  padding: EdgeInsets.fromLTRB(20,100,20,10),
                   child: RichText(
                     text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: weather.temperatureInfo.temp.toString(),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 110,
-                              fontWeight: FontWeight.bold,
-                            ),
+                      children: [
+                        TextSpan(
+                          text: weather.temperatureInfo.temp.toString(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 110,
+                            fontWeight: FontWeight.bold,
                           ),
-                          WidgetSpan(
-                            child: Transform.translate(
-                              offset: Offset(0, -40),
-                              child: Text('°C',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                        ),
+                        WidgetSpan(
+                          child: Transform.translate(
+                            offset: Offset(0, -40),
+                            child: Text('°C',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                          )
-                        ]
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -245,12 +226,12 @@ class _HomeState extends State<Home> {
                   height: 70,
                   width: 70,
                   decoration: BoxDecoration(
-                      color: Colors.transparent.withOpacity(1),
+                      color: Colors.black54,
                       borderRadius: BorderRadius.circular(50)
                   ),
                   child: Image.network(weather.icon),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 5),
                 Text(weather.weatherInfo.desc.toString().toUpperCase()[0] + weather.weatherInfo.desc.toString().substring(1),
                   style: TextStyle(
                     color: Colors.white,
@@ -258,36 +239,94 @@ class _HomeState extends State<Home> {
                     fontWeight: FontWeight.w400,
                   ),
                 ),
-                forecast.length == 0
-                ? Container()
-                : Padding(
-                  padding: EdgeInsets.fromLTRB(10,20,10,0),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(15,50,15,5),
                   child: Container(
-                    padding: EdgeInsets.all(5),
+                    padding: EdgeInsets.fromLTRB(0,15,0,15),
                     decoration: BoxDecoration(
-                      color: Colors.transparent.withAlpha(80),
-                      borderRadius: BorderRadius.circular(30),
+                      color: Colors.transparent.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(25),
                     ),
-                    child: ListView.builder(
-                      itemCount: 7,
-                      shrinkWrap: true,
-                      physics: ScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        return DailyTile(
-                          dt: forecast[index].daily[index].dt,
-                          min: forecast[index].daily[index].temp.min,
-                          max: forecast[index].daily[index].temp.max,
-                          main: forecast[index].daily[index].main,
-                          icon: forecast[index].daily[index].icons,
-                        );
-                      },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+                          children: [
+                            Image.asset('assets/images/wind.png',
+                              height: 35,
+                              width: 35,
+                              color: Colors.grey,
+                            ),
+                            SizedBox(height: 5),
+                            Text((weather.windInfo.speed * 3.6).toString() + "km/h",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                              ),
+                            ),
+                            Text("Wind",
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Image.asset('assets/images/drop.png',
+                              height: 35,
+                              width: 35,
+                              color: Colors.grey,
+                            ),
+                            SizedBox(height: 5),
+                            Text(weather.temperatureInfo.humidity.toString() + "%",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                              ),
+                            ),
+                            Text("Humidity",
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Image.asset('assets/images/weather.png',
+                              height: 35,
+                              width: 35,
+                              color: Colors.grey,
+                            ),
+                            SizedBox(height: 5),
+                            Text(weather.temperatureInfo.feels.toString() + "°",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                              ),
+                            ),
+                            Text("Real feel",
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(10,15,10,10),
+                  padding: EdgeInsets.fromLTRB(10,10,10,0),
                   child: Container(
-                    height: 220,
+                    height: 200,
                     child: ListView.builder(
                       itemCount: forecast.length,
                       scrollDirection: Axis.horizontal,
@@ -303,100 +342,29 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(20,0,20,20),
+                forecast.length == 0
+                ? Container()
+                : Padding(
+                  padding: EdgeInsets.fromLTRB(10,5,10,40),
                   child: Container(
-                    padding: EdgeInsets.fromLTRB(0,20,0,20),
+                    padding: EdgeInsets.all(5),
                     decoration: BoxDecoration(
-                      color: Colors.transparent.withAlpha(80),
+                      color: Colors.transparent.withOpacity(0.5),
                       borderRadius: BorderRadius.circular(30),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Column(
-                          children: [
-                            Column(
-                              children: [
-                                Text("Real feel",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w300,
-                                  ),
-                                ),
-                                SizedBox(height: 10),
-                                Text(weather.temperatureInfo.feels.toString() + "°C",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 22,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 30),
-                            Column(
-                              children: [
-                                Text("Humidity",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w300,
-                                  ),
-                                ),
-                                SizedBox(height: 10),
-                                Text(weather.temperatureInfo.humidity.toString() + "%",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 22,
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Column(
-                              children: [
-                                Text("Pressure",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w300,
-                                  ),
-                                ),
-                                SizedBox(height: 10),
-                                Text(weather.temperatureInfo.pressure.toString() + "hPa",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 22,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 30),
-                            Column(
-                              children: [
-                                Text("Wind speed",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w300,
-                                  ),
-                                ),
-                                SizedBox(height: 10),
-                                Text((weather.windInfo.speed * 3.6).toString() + "km/h",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 22,
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        )
-                      ],
+                    child: ListView.builder(
+                      itemCount: 7,
+                      shrinkWrap: true,
+                      physics: ScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return DailyTile(
+                          dt: forecast[index].daily[index].dt,
+                          min: forecast[index].daily[index].temp.min,
+                          max: forecast[index].daily[index].temp.max,
+                          main: forecast[index].daily[index].main,
+                          icon: forecast[index].daily[index].icons,
+                        );
+                      },
                     ),
                   ),
                 ),
