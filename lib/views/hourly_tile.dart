@@ -5,12 +5,12 @@ import 'package:timezone/timezone.dart' as tz;
 
 class HourlyTile extends StatelessWidget {
   final int? dt, temp;
-  final String? icon, main, timezone;
-  const HourlyTile({Key? key, this.dt, this.temp, this.icon, this.main, this.timezone}) : super(key: key);
+  final String? main, timezone;
+  const HourlyTile({Key? key, this.dt, this.temp, this.main, this.timezone})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     var location, dateTime, formattedDateTime, finalDateTime;
     tz.initializeTimeZones();
     location = tz.getLocation(timezone!);
@@ -18,43 +18,36 @@ class HourlyTile extends StatelessWidget {
 
     formattedDateTime = DateFormat('HH:00').format(dateTime);
 
-    if(formattedDateTime == '00:00'){
+    if (formattedDateTime == '00:00') {
       finalDateTime = DateFormat('MM/dd').format(dateTime);
     } else {
       finalDateTime = DateFormat('HH:00').format(dateTime);
     }
 
     return Container(
-      padding: EdgeInsets.all(18),
+      padding: EdgeInsets.all(20),
       child: Column(
         children: [
-          Text(finalDateTime,
+          Text(
+            finalDateTime,
             style: TextStyle(
               color: Colors.white,
               fontSize: 18,
               fontWeight: FontWeight.w300,
             ),
           ),
-          SizedBox(height: 5),
-          Text("$temp°",
+          SizedBox(height: 8),
+          Text(
+            "$temp°",
             style: TextStyle(
               color: Colors.white,
               fontSize: 26,
+              fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 10),
-          Container(
-            padding: EdgeInsets.all(2),
-            height: 60,
-            width: 60,
-            decoration: BoxDecoration(
-              color: Colors.black54,
-              borderRadius: BorderRadius.circular(50),
-            ),
-            child: Image.network(icon!),
-          ),
-          SizedBox(height: 5),
-          Text(main!,
+          SizedBox(height: 8),
+          Text(
+            main!,
             style: TextStyle(
               color: Colors.white,
               fontSize: 18,

@@ -29,14 +29,28 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   http: ^0.13.3
-  intl: ^0.17.0
-  timezone: ^0.8.0
+  intl: ^0.18.0
+  timezone: ^0.9.1
   shared_preferences: ^2.0.7
-  shimmer: ^2.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  flutter_launcher_icons: "^0.11.0"
+  flutter_native_splash: ^2.2.16
+
+flutter_native_splash:
+  color: "#27273f"
+  image: assets/images/splash.png
+  android_gravity: fill
+
+flutter_icons:
+  android: "launcher_icon"
+  image_path: "assets/images/appIcon.png"
+  adaptive_icon_background: "#6ea4dd"
+  adaptive_icon_foreground: "assets/images/appIcon.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

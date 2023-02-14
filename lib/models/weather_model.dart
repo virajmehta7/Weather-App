@@ -1,128 +1,114 @@
-class Weather{
-  String? cityName;
-  CoordInfo? coordInfo;
-  TemperatureInfo? temperatureInfo;
-  WeatherInfo? weatherInfo;
-  WindInfo? windInfo;
+class WeatherModel {
+  WeatherModel(
+      {required this.coord,
+      required this.weather,
+      required this.main,
+      required this.wind,
+      required this.name});
+
+  Coord coord;
+  List<Weather> weather;
+  Main main;
+  Wind wind;
+  String name;
 
   String get icon {
-    return 'https://openweathermap.org/img/wn/${weatherInfo!.icon}@2x.png';
+    return 'https://openweathermap.org/img/wn/${weather.first.icon}@2x.png';
   }
 
   get background {
-    if (weatherInfo!.main == "Thunderstorm")
-      return 'assets/images/thunderstorm.jpg';
-    if (weatherInfo!.main == "Drizzle")
-      return 'assets/images/drizzle.jpg';
-    if (weatherInfo!.main == "Rain")
-      return 'assets/images/rain.jpg';
-    if (weatherInfo!.main == "Snow")
-      return 'assets/images/snow.jpg';
-    if (weatherInfo!.main == "Clear")
+    if (weather.first.main == "Clear")
       return 'assets/images/clear.jpg';
-    if (weatherInfo!.main == "Clouds")
+    else if (weather.first.main == "Clouds")
       return 'assets/images/clouds.jpg';
-    if (weatherInfo!.main == "Mist" ||
-        weatherInfo!.main == "Smoke" ||
-        weatherInfo!.main == "Haze" ||
-        weatherInfo!.main == "Dust" ||
-        weatherInfo!.main == "Fog" ||
-        weatherInfo!.main == "Sand" ||
-        weatherInfo!.main == "Ash" ||
-        weatherInfo!.main == "Squall" ||
-        weatherInfo!.main == "Tornado"
-    )
+    else if (weather.first.main == "Rain")
+      return 'assets/images/rain.jpg';
+    else if (weather.first.main == "Drizzle")
+      return 'assets/images/drizzle.jpg';
+    else if (weather.first.main == "Thunderstorm")
+      return 'assets/images/thunderstorm.jpg';
+    else if (weather.first.main == "Snow")
+      return 'assets/images/snow.jpg';
+    else
       return 'assets/images/fog.jpg';
-
   }
 
-  Weather({
-    this.cityName,
-    this.coordInfo,
-    this.temperatureInfo,
-    this.weatherInfo,
-    this.windInfo,
-  });
+  factory WeatherModel.fromJson(Map<String, dynamic> json) => WeatherModel(
+      coord: Coord.fromJson(json["coord"]),
+      weather:
+          List<Weather>.from(json["weather"].map((x) => Weather.fromJson(x))),
+      main: Main.fromJson(json["main"]),
+      wind: Wind.fromJson(json["wind"]),
+      name: json["name"]);
 
-  factory Weather.fromJson(Map<String, dynamic> json) {
-    return Weather(
-      cityName: json['name'],
-      coordInfo: CoordInfo.fromJson(json['coord']),
-      temperatureInfo: TemperatureInfo.fromJson(json['main']),
-      weatherInfo: WeatherInfo.fromJson(json['weather'][0]),
-      windInfo: WindInfo.fromJson(json['wind']),
-    );
-  }
+  Map<String, dynamic> toJson() => {
+        "coord": coord.toJson(),
+        "weather": List<dynamic>.from(weather.map((x) => x.toJson())),
+        "main": main.toJson(),
+        "wind": wind.toJson(),
+        "name": name
+      };
 }
 
-class CoordInfo{
-  double? lon;
-  double? lat;
+class Coord {
+  Coord({required this.lon, required this.lat});
 
-  CoordInfo({
-    this.lon,
-    this.lat
-  });
+  double lon;
+  double lat;
 
-  factory CoordInfo.fromJson(Map<String, dynamic> json) {
-    return CoordInfo(
-      lon: json['lon'].toDouble(),
-      lat: json['lat'].toDouble()
-    );
-  }
+  factory Coord.fromJson(Map<String, dynamic> json) =>
+      Coord(lon: json["lon"]?.toDouble(), lat: json["lat"]?.toDouble());
+
+  Map<String, dynamic> toJson() => {"lon": lon, "lat": lat};
 }
 
-class TemperatureInfo{
-  int? temp;
-  int? feels;
-  int? pressure;
-  int? humidity;
+class Main {
+  Main(
+      {required this.temp,
+      required this.feelsLike,
+      required this.pressure,
+      required this.humidity});
 
-  TemperatureInfo({
-    this.temp,
-    this.feels,
-    this.pressure,
-    this.humidity
-  });
+  int temp;
+  int feelsLike;
+  int pressure;
+  int humidity;
 
-  factory TemperatureInfo.fromJson(Map<String, dynamic> json){
-    return TemperatureInfo(
-      temp: json['temp'].toInt(),
-      feels: json['feels_like'].toInt(),
-      pressure: json['pressure'].toInt(),
-      humidity: json['humidity'].toInt()
-    );
-  }
+  factory Main.fromJson(Map<String, dynamic> json) => Main(
+      temp: json["temp"]?.toInt(),
+      feelsLike: json["feels_like"]?.toInt(),
+      pressure: json["pressure"],
+      humidity: json["humidity"]);
+
+  Map<String, dynamic> toJson() => {
+        "temp": temp,
+        "feels_like": feelsLike,
+        "pressure": pressure,
+        "humidity": humidity
+      };
 }
 
-class WeatherInfo{
-  String? main;
-  String? desc;
-  String? icon;
+class Weather {
+  Weather({required this.main, required this.description, required this.icon});
 
-  WeatherInfo({
-    this.main,
-    this.desc,
-    this.icon
-  });
+  String main;
+  String description;
+  String icon;
 
-  factory WeatherInfo.fromJson(Map<String, dynamic> json){
-    return WeatherInfo(
-      main: json['main'],
-      desc: json['description'],
-      icon: json['icon']
-    );
-  }
+  factory Weather.fromJson(Map<String, dynamic> json) => Weather(
+      main: json["main"], description: json["description"], icon: json["icon"]);
+
+  Map<String, dynamic> toJson() =>
+      {"main": main, "description": description, "icon": icon};
 }
 
-class WindInfo{
-  int? speed;
+class Wind {
+  Wind({required this.speed});
 
-  WindInfo({this.speed});
+  double speed;
 
-  factory WindInfo.fromJson(Map<String, dynamic> jsom){
-    return WindInfo(
-      speed: jsom['speed'].toInt()
-    );
-  }
+  factory Wind.fromJson(Map<String, dynamic> json) =>
+      Wind(speed: json["speed"]?.toDouble());
+
+  Map<String, dynamic> toJson() => {"speed": speed};
 }

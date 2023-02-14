@@ -1,103 +1,68 @@
-class Forecast{
-  String? timezone;
-  final List<Hourly>? hourly;
-  final List<Daily>? daily;
+class ForecastModel {
+  ForecastModel(
+      {required this.timezone, required this.hourly, required this.daily});
 
-  Forecast({
-    this.timezone,
-    this.hourly,
-    this.daily
-  });
+  String timezone;
+  List<Hourly> hourly;
+  List<Daily> daily;
 
-  factory Forecast.fromJson(Map<String, dynamic> json) {
-    return Forecast(
-      timezone: json['timezone'],
-      hourly: hourlyJson(json),
-      daily: dailyJson(json),
-    );
-  }
+  factory ForecastModel.fromJson(Map<String, dynamic> json) => ForecastModel(
+      timezone: json["timezone"],
+      hourly: List<Hourly>.from(json["hourly"].map((x) => Hourly.fromJson(x))),
+      daily: List<Daily>.from(json["daily"].map((x) => Daily.fromJson(x))));
 
-  static List<Hourly> hourlyJson(json) {
-    List<dynamic> body = json['hourly'];
-    List<Hourly> forecast = body.map((item) => Hourly.fromJson(item)).toList();
-    return forecast;
-  }
-
-  static List<Daily> dailyJson(json) {
-    List<dynamic> body = json['daily'];
-    List<Daily> forecast = body.map((item) => Daily.fromJson(item)).toList();
-    return forecast;
-  }
+  Map<String, dynamic> toJson() => {
+        "timezone": timezone,
+        "hourly": List<dynamic>.from(hourly.map((x) => x.toJson())),
+        "daily": List<dynamic>.from(daily.map((x) => x.toJson()))
+      };
 }
 
-class Hourly{
-  int? dt;
-  int? temp;
-  String? main;
-  String? icon;
+class Hourly {
+  Hourly({required this.dt, required this.temp, required this.main});
 
-  String get icons {
-    return 'https://openweathermap.org/img/wn/$icon@2x.png';
-  }
+  int dt;
+  int temp;
+  String main;
 
-  Hourly({
-    this.dt,
-    this.temp,
-    this.main,
-    this.icon
-  });
+  factory Hourly.fromJson(Map<String, dynamic> json) => Hourly(
+      dt: json["dt"],
+      temp: json["temp"]?.toInt(),
+      main: json['weather'][0]['main']);
 
-  factory Hourly.fromJson(Map<String, dynamic> json) {
-    return Hourly(
-      dt: json['dt'].toInt(),
-      temp: json['temp'].toInt(),
+  Map<String, dynamic> toJson() => {"dt": dt, "temp": temp, "main": main};
+}
+
+class Daily {
+  Daily(
+      {required this.dt,
+      required this.temp,
+      required this.main,
+      required this.uvi});
+
+  int dt;
+  Temp temp;
+  String main;
+  double uvi;
+
+  factory Daily.fromJson(Map<String, dynamic> json) => Daily(
+      dt: json["dt"],
+      temp: Temp.fromJson(json["temp"]),
       main: json['weather'][0]['main'],
-      icon: json['weather'][0]['icon']
-    );
-  }
+      uvi: json["uvi"]?.toDouble());
+
+  Map<String, dynamic> toJson() =>
+      {"dt": dt, "temp": temp.toJson(), "main": main, "uvi": uvi};
 }
 
-class Daily{
-  int? dt;
-  Temp? temp;
-  String? main;
-  String? icon;
+class Temp {
+  Temp({required this.min, required this.max});
 
-  String get icons {
-    return 'https://openweathermap.org/img/wn/$icon@2x.png';
-  }
+  int min;
+  int max;
 
-  Daily({
-    this.dt,
-    this.temp,
-    this.main,
-    this.icon
-  });
+  factory Temp.fromJson(Map<String, dynamic> json) =>
+      Temp(min: json["min"]?.toInt(), max: json["max"]?.toInt());
 
-  factory Daily.fromJson(Map<String, dynamic> json) {
-    return Daily(
-      dt: json['dt'].toInt(),
-      temp: Temp.fromJson(json['temp']),
-      main: json['weather'][0]['main'],
-      icon: json['weather'][0]['icon']
-    );
-  }
-
-}
-
-class Temp{
-  int? min;
-  int? max;
-
-  Temp({
-    this.min,
-    this.max
-  });
-
-  factory Temp.fromJson(Map<String, dynamic> json) {
-    return Temp(
-      min: json['min'].toInt(),
-      max: json['max'].toInt()
-    );
-  }
+  Map<String, dynamic> toJson() => {"min": min, "max": max};
 }
